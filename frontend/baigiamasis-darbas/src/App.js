@@ -1,5 +1,72 @@
+// import React, { useContext, useState } from "react";
+// import "./App.css";
+// import { Routes, Route, useNavigate } from "react-router-dom";
+// import { Login } from "./components/Login";
+// import { Registration } from "./components/Registration";
+// import { PageNotFound } from "./components/PageNotFound";
+// import { NavBar } from "./components/NavBar";
+// import { Homepage } from "./components/Homepage";
+// import { List } from "./components/List";
+// import Protected from "./components/Protected";
+// import {
+//   AuthenticationContext,
+//   AuthenticationProvider,
+// } from "./components/AuthenticationContext";
+
+// function App() {
+//   const navigate = useNavigate();
+//   const { isSignedIn, setIsSignedIn } = useContext(AuthenticationContext);
+//   const [isLoading, setIsLoading] = useState(true);
+
+//   const handleLogout = () => {
+//     localStorage.removeItem("token");
+//     setIsSignedIn(false);
+//   };
+
+//   return (
+//     <>
+//       <NavBar isLoading={isLoading} onLogout={handleLogout} />
+//       {isSignedIn ? (
+//         <button onClick={handleLogout}>LOGOUT</button>
+//       ) : (
+//         <button
+//           onClick={() => {
+//             setIsSignedIn(true);
+//             navigate("/");
+//           }}
+//         >
+//           LOGIN
+//         </button>
+//       )}
+//       <Routes>
+//         <Route path="*" element={<PageNotFound />} />
+//         <Route path="/login" element={<Login />} />
+//         <Route path="/register" element={<Registration />} />
+//         <Route
+//           element={
+//             <Protected isLoading={isLoading} setIsLoading={setIsLoading} />
+//           }
+//         >
+//           <Route path="/" element={<Homepage />} />
+//           <Route path="/list" element={<List />} />
+//         </Route>
+//       </Routes>
+//     </>
+//   );
+// }
+
+// function AppWrapper() {
+//   return (
+//     <AuthenticationProvider>
+//       <App />
+//     </AuthenticationProvider>
+//   );
+// }
+
+// export default AppWrapper;
+import React, { useContext, useState } from "react";
 import "./App.css";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import { Login } from "./components/Login";
 import { Registration } from "./components/Registration";
 import { PageNotFound } from "./components/PageNotFound";
@@ -7,22 +74,29 @@ import { NavBar } from "./components/NavBar";
 import { Homepage } from "./components/Homepage";
 import { List } from "./components/List";
 import Protected from "./components/Protected";
-import React, { useContext, useState, useEffect } from "react";
-
-import { AuthenticationContext } from "./components/AuthenticationContext";
+import {
+  AuthenticationContext,
+  AuthenticationProvider,
+} from "./components/AuthenticationContext";
 
 function App() {
-  const { setIsSignedIn } = useContext(AuthenticationContext);
+  const navigate = useNavigate();
+  const { isSignedIn, setIsSignedIn } = useContext(AuthenticationContext);
   const [isLoading, setIsLoading] = useState(true);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
     setIsSignedIn(false);
   };
+
   return (
     <>
-      <NavBar isLoading={isLoading} onLogout={handleLogout} />
-
+      <NavBar
+        isLoading={isLoading}
+        onLogout={handleLogout}
+        isSignedIn={isSignedIn}
+        navigate={navigate}
+      />
       <Routes>
         <Route path="*" element={<PageNotFound />} />
         <Route path="/login" element={<Login />} />
@@ -40,4 +114,12 @@ function App() {
   );
 }
 
-export default App;
+function AppWrapper() {
+  return (
+    <AuthenticationProvider>
+      <App />
+    </AuthenticationProvider>
+  );
+}
+
+export default AppWrapper;
