@@ -2,6 +2,7 @@ const express = require("express");
 
 const { dbConnection } = require("../db");
 const { defaultCallback } = require("../helpers/dbHelper");
+const { verifyToken } = require("..//helpers/authenticationUtils");
 
 const router = express.Router();
 

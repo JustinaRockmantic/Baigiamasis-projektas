@@ -50,6 +50,13 @@ dbConnection.query("CREATE DATABASE IF NOT EXISTS baigiamasis", function (err) {
     });
   });
 });
+
+const codeacademyConnection = mysql.createConnection({
+  ...databaseConfig,
+  database: "baigiamasis",
+});
+
 module.exports = {
   dbConnection,
+  codeacademyConnection,
 };
