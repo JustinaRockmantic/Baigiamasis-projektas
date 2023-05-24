@@ -12,68 +12,44 @@ const dbConnection = mysql.createConnection({
   database: "",
 });
 
-dbConnection.query(
-  "CREATE DATABASE IF NOT EXISTS registration_info",
-  function (err) {
+dbConnection.query("CREATE DATABASE IF NOT EXISTS baigiamasis", function (err) {
+  if (err) throw err;
+  console.log("Database baigiamasis created");
+
+  dbConnection.query("USE baigiamasis", (err) => {
     if (err) throw err;
-    console.log("Database registration_info created");
 
-    dbConnection.query("USE registration_info", (err) => {
-      if (err) throw err;
-
-      //   const registrationTableQuery = `
-      //           CREATE TABLE IF NOT EXISTS posts (
-      //             id INT AUTO_INCREMENT PRIMARY KEY,
-      //             email VARCHAR(255) UNIQUE NOT NULL,
-      //             first_name VARCHAR(255) NOT NULL,
-      //             last_name VARCHAR(255) NOT NULL,
-      //             password VARCHAR(255) NOT NULL
-      //           );
-      //           CREATE TABLE event_participants (
-      //             id INT AUTO_INCREMENT PRIMARY KEY,
-      //             first_name VARCHAR(255) NOT NULL,
-      //             last_name VARCHAR(255) NOT NULL,
-      //             email VARCHAR(255) UNIQUE NOT NULL,
-      //             phone_number VARCHAR(20) NOT NULL
-      //         );
-      //           `;
-      //   dbConnection.query(registrationTableQuery, (err) => {
-      //     if (err) throw err;
-      //     console.log("Registration Table created");
-      //   });
-      // });
-      const registrationTableQuery = `
-  CREATE TABLE IF NOT EXISTS admin_registration (
+    const registerTableQuery = `
+  CREATE TABLE IF NOT EXISTS register (
     id INT AUTO_INCREMENT PRIMARY KEY,
     email VARCHAR(255) UNIQUE NOT NULL,
-    first_name VARCHAR(255) NOT NULL,
-    last_name VARCHAR(255) NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    surname VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL
   );
 `;
 
-      const eventParticipantsTableQuery = `
-  CREATE TABLE IF NOT EXISTS event_participants (
+    const listTableQuery = `
+  CREATE TABLE IF NOT EXISTS list (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    first_name VARCHAR(255) NOT NULL,
-    last_name VARCHAR(255) NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    surname VARCHAR(255) NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL,
-    phone_number VARCHAR(20) NOT NULL
+    phone VARCHAR(20) NOT NULL
   );
 `;
 
-      dbConnection.query(registrationTableQuery, (err) => {
-        if (err) throw err;
-        console.log("Registration Table created");
+    dbConnection.query(registerTableQuery, (err) => {
+      if (err) throw err;
+      console.log("Register Table created");
 
-        dbConnection.query(eventParticipantsTableQuery, (err) => {
-          if (err) throw err;
-          console.log("Event Participants Table created");
-        });
+      dbConnection.query(listTableQuery, (err) => {
+        if (err) throw err;
+        console.log("List Table created");
       });
     });
-  }
-);
+  });
+});
 module.exports = {
   dbConnection,
 };

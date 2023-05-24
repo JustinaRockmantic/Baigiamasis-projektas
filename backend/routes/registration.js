@@ -4,7 +4,7 @@ const { defaultCallback } = require("../helpers/dbHelper");
 
 const router = express.Router();
 
-router.get("/registration", (req, res) => {
+router.get("/register", (req, res) => {
   dbConnection.execute(`SELECT * FROM admin_registration`, (err, result) => {
     defaultCallback(err, result, res);
   });
@@ -16,7 +16,7 @@ router.get("/list", (req, res) => {
   });
 });
 
-router.post("/registration", (req, res) => {
+router.post("/register", (req, res) => {
   const { email, first_name, last_name, password } = req.body;
 
   const postQuery =
