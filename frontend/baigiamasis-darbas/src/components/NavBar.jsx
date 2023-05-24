@@ -61,7 +61,7 @@ export const NavBar = ({ isLoading, onLogout }) => {
             </li>
             <li>
               <Link to="/list" style={linkStyle}>
-                Svečių sąrašas
+                Dalyvių registracija
               </Link>
             </li>
           </>
