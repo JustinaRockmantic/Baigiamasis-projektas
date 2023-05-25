@@ -31,6 +31,10 @@ export const Login = () => {
       .catch((err) => console.log(err));
   };
 
+  const handleNavigate = () => {
+    navigate("/register");
+  };
+
   const handleOnChange = (event) => {
     setFormData({
       ...formData,
@@ -65,7 +69,7 @@ export const Login = () => {
             marginBottom: "10px",
             cursor: "pointer",
           }}
-          onClick={() => navigate(-1)}
+          onClick={handleNavigate}
         >
           Atgal
         </button>

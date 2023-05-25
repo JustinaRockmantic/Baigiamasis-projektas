@@ -6,12 +6,10 @@ const router = express.Router();
 
 router.get("/list", (req, res) => {
   dbConnection.execute(
-    "SELECT list.id, list.name, list.surname, list.email, list.phone, register.name as register_name, register.email FROM list LEFT JOIN register ON list.registratoriausId = register.id",
+    "SELECT * FROM list",
+
     (err, result) => {
-      if (err) {
-        return defaultCallback(err, null, res);
-      }
-      return defaultCallback(null, result, res);
+      return defaultCallback(err, result, res);
     }
   );
 });

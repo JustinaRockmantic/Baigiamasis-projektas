@@ -30,10 +30,6 @@ export const Registration = () => {
     });
   };
 
-  // const onNameChange = (e) => {
-  //   setName(e.target.value);
-  // };
-
   return (
     <div
       style={{
