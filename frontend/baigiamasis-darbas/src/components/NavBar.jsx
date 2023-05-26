@@ -19,8 +19,9 @@ export const NavBar = ({ isLoading, onLogout }) => {
     margin: "0",
     padding: "0",
     display: "flex",
-    justifyContent: "space-between",
     alignItems: "center",
+    justifyContent: "flex-end",
+    width: "100%",
   };
 
   const linkStyle = {
@@ -28,6 +29,7 @@ export const NavBar = ({ isLoading, onLogout }) => {
     textDecoration: "none",
     margin: "0 10px",
     fontSize: "18px",
+    textShadow: "1px 1px darkgrey",
   };
 
   const partyEmojiStyle = {
@@ -43,7 +45,8 @@ export const NavBar = ({ isLoading, onLogout }) => {
   };
 
   const logoutContainerStyle = {
-    marginLeft: "auto",
+    display: "flex",
+    alignItems: "center",
   };
 
   return (
@@ -64,6 +67,11 @@ export const NavBar = ({ isLoading, onLogout }) => {
                 Dalyvių registracija
               </Link>
             </li>
+            <li style={logoutContainerStyle}>
+              <button onClick={onLogout} style={buttonStyle}>
+                ATSIJUNGTI
+              </button>
+            </li>
           </>
         ) : (
           <>
@@ -78,13 +86,6 @@ export const NavBar = ({ isLoading, onLogout }) => {
               </Link>
             </li>
           </>
-        )}
-        {isSignedIn && (
-          <li style={logoutContainerStyle}>
-            <button onClick={onLogout} style={buttonStyle}>
-              ATSIJUNGTI
-            </button>
-          </li>
         )}
       </ul>
     </nav>

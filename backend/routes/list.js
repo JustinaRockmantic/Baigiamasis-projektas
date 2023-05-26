@@ -5,13 +5,9 @@ const { defaultCallback } = require("../helpers/dbHelper");
 const router = express.Router();
 
 router.get("/list", (req, res) => {
-  dbConnection.execute(
-    "SELECT * FROM list",
-
-    (err, result) => {
-      return defaultCallback(err, result, res);
-    }
-  );
+  dbConnection.execute("SELECT * FROM list", (err, result) => {
+    return defaultCallback(err, result, res);
+  });
 });
 
 router.post("/list", (req, res) => {
@@ -35,7 +31,7 @@ router.put("/list/:id", (req, res) => {
 
   dbConnection.execute(
     "UPDATE list SET name=?, surname=?, email=?, phone=? WHERE id=?",
-    [name, surname, email, phone, registratoriausId, id],
+    [name, surname, email, phone, id],
     (err, result) => {
       if (err) {
         return defaultCallback(err, null, res);

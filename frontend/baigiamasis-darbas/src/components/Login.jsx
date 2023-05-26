@@ -31,10 +31,6 @@ export const Login = () => {
       .catch((err) => console.log(err));
   };
 
-  const handleNavigate = () => {
-    navigate("/register");
-  };
-
   const handleOnChange = (event) => {
     setFormData({
       ...formData,
@@ -60,19 +56,6 @@ export const Login = () => {
           borderRadius: "7.5px",
         }}
       >
-        <button
-          style={{
-            background: "lightgrey",
-            border: "none",
-            borderRadius: "4px",
-            color: "black",
-            marginBottom: "10px",
-            cursor: "pointer",
-          }}
-          onClick={handleNavigate}
-        >
-          Atgal
-        </button>
         <h2 style={{ textAlign: "center" }}>
           <b>Prisijunkite prie puslapio</b>
         </h2>

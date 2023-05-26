@@ -4,8 +4,9 @@ import imageSrc from "../assets/image.png";
 
 const YourComponent = () => {
   const imageStyle = {
-    width: "100%",
+    width: "70%",
     height: "auto",
+    marginLeft: "100px",
   };
 
   return (
@@ -14,7 +15,7 @@ const YourComponent = () => {
       <h2>
         Uch...Panašu, kad pasiklydot... Norėdami grįžti į pagrindinį puslapį
         spauskite{" "}
-        <Link style={{ color: "lightblue" }} to="/">
+        <Link style={{ color: " #c770d5" }} to="/">
           ČIA
         </Link>
       </h2>

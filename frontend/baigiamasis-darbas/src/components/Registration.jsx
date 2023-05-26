@@ -3,13 +3,13 @@ import { useState } from "react";
 import axios from "axios";
 
 export const Registration = () => {
-  const [name, setName] = useState("");
   const [formData, setFormData] = useState({
     name: "",
     surname: "",
     email: "",
     password: "",
   });
+  const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
 
   const onHandleSubmit = (e) => {
@@ -20,7 +20,13 @@ export const Registration = () => {
       .then((response) => {
         navigate("/login");
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        if (err.response && err.response.data && err.response.data.message) {
+          setErrorMessage(err.response.data.message);
+        } else {
+          console.log(err);
+        }
+      });
   };
 
   const handleOnChange = (event) => {
@@ -57,7 +63,7 @@ export const Registration = () => {
           }}
         >
           <h2>
-            <b>Užsiregistruokite čia</b>
+            <b>REGISTRACIJA</b>
           </h2>
           <p>Norėdami užsiregistruoti, suveskite duomenis žemiau</p>
         </div>
@@ -69,6 +75,9 @@ export const Registration = () => {
           }}
           onSubmit={onHandleSubmit}
         >
+          {errorMessage && (
+            <p style={{ color: "red", marginBottom: "10px" }}>{errorMessage}</p>
+          )}
           <input
             style={{
               width: "100%",

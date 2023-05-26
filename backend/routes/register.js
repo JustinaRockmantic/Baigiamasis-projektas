@@ -14,12 +14,28 @@ router.post("/register", (req, res) => {
   const { body } = req;
   const { name, surname, email, password } = body;
 
-  const hashedPassword = bcrypt.hashSync(password, 12);
-
   dbConnection.execute(
-    "INSERT INTO register (name, surname, email, password) VALUES (?, ?, ?, ?)",
-    [name, surname, email, hashedPassword],
-    (err, result) => defaultCallback(err, result, res)
+    "SELECT * FROM register WHERE email=?",
+    [email],
+    (err, result) => {
+      if (err) {
+        return defaultCallback(err, null, res);
+      }
+
+      if (result.length > 0) {
+        return res.status(400).json({
+          message: "Tokia paskyra jau egzistuoja. Prašome prisijungti.",
+        });
+      }
+
+      const hashedPassword = bcrypt.hashSync(password, 12);
+
+      dbConnection.execute(
+        "INSERT INTO register (name, surname, email, password) VALUES (?, ?, ?, ?)",
+        [name, surname, email, hashedPassword],
+        (err, result) => defaultCallback(err, result, res)
+      );
+    }
   );
 });
 
@@ -29,7 +45,7 @@ router.post("/login", (req, res) => {
 
   const incorrectCredentialsResponse = () =>
     res.json({
-      message: "Incorrect email or password",
+      message: "Neteisingas el.paštas arba slaptažodis",
     });
 
   if (!email || !password) {

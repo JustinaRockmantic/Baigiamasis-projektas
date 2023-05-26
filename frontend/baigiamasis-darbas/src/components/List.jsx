@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Table, Form, Button } from "react-bootstrap";
 import axios from "axios";
 import Confetti from "react-confetti";
@@ -13,6 +13,7 @@ export const List = () => {
     phone: "",
   });
   const [showConfetti, setShowConfetti] = useState(false);
+  const [editGuest, setEditGuest] = useState(null);
 
   const handleOnChange = (e) => {
     setForm({
@@ -24,27 +25,46 @@ export const List = () => {
   const handleOnSubmit = (e) => {
     e.preventDefault();
 
-    axios
-      .post("http://localhost:5000/list", form)
-      .then((res) => {
-        console.log(res);
-        setForm({
-          name: "",
-          surname: "",
-          email: "",
-          phone: "",
-        });
-        fetchGuests();
-        setShowConfetti(true);
-        setTimeout(() => {
-          setShowConfetti(false);
-        }, 2000);
-      })
-      .catch((err) => console.log(err));
+    if (editGuest) {
+      axios
+        .put(`http://localhost:5000/list/${editGuest.id}`, form)
+        .then((res) => {
+          console.log(res);
+          setForm({
+            name: "",
+            surname: "",
+            email: "",
+            phone: "",
+          });
+          setEditGuest(null);
+          fetchGuests();
+        })
+        .catch((err) => console.log(err));
+    } else {
+      axios
+        .post("http://localhost:5000/list", form)
+        .then((res) => {
+          console.log(res);
+          setForm({
+            name: "",
+            surname: "",
+            email: "",
+            phone: "",
+          });
+          fetchGuests();
+          setShowConfetti(true);
+          setTimeout(() => {
+            setShowConfetti(false);
+          }, 3000);
+        })
+        .catch((err) => console.log(err));
+    }
   };
 
-  const handleDelete = (id) => {
-    if (window.confirm("Are you sure you want to delete this guest?")) {
+  const handleDelete = (id, name, surname) => {
+    if (
+      window.confirm(`Ar tikrai norite ištrinti dalyvį: ${name} ${surname}?`)
+    ) {
       axios
         .delete(`http://localhost:5000/list/${id}`)
         .then((res) => {
@@ -53,6 +73,16 @@ export const List = () => {
         })
         .catch((err) => console.log(err));
     }
+  };
+
+  const handleEdit = (guest) => {
+    setEditGuest(guest);
+    setForm({
+      name: guest.name,
+      surname: guest.surname,
+      email: guest.email,
+      phone: guest.phone,
+    });
   };
 
   const fetchGuests = () => {
@@ -80,7 +110,7 @@ export const List = () => {
     <div className="list-container">
       <Form onSubmit={handleOnSubmit}>
         <Form.Group>
-          <Form.Label>Name</Form.Label>
+          <Form.Label>Vardas</Form.Label>
           <Form.Control
             type="text"
             name="name"
@@ -89,7 +119,7 @@ export const List = () => {
           />
         </Form.Group>
         <Form.Group>
-          <Form.Label>Surname</Form.Label>
+          <Form.Label>Pavardė</Form.Label>
           <Form.Control
             type="text"
             name="surname"
@@ -107,7 +137,7 @@ export const List = () => {
           />
         </Form.Group>
         <Form.Group>
-          <Form.Label>Phone</Form.Label>
+          <Form.Label>Tel. Nr.</Form.Label>
           <Form.Control
             type="text"
             name="phone"
@@ -116,18 +146,18 @@ export const List = () => {
           />
         </Form.Group>
         <Button variant="primary" type="submit">
-          Add New Guest
+          {editGuest ? "Redaguoti dalyvį" : "Pridėti dalyvį"}
         </Button>
       </Form>
 
       <Table striped bordered className="guest-table">
         <thead>
           <tr>
-            <th>Name</th>
-            <th>Surname</th>
+            <th>Vardas</th>
+            <th>Pavardė</th>
             <th>Email</th>
-            <th>Phone</th>
-            <th>Action</th>
+            <th>Tel. Nr.</th>
+            <th>Veiksmas</th>
           </tr>
         </thead>
         <tbody>
@@ -138,13 +168,24 @@ export const List = () => {
               <td>{guest.email}</td>
               <td>{guest.phone}</td>
               <td>
-                <Button
-                  variant="danger"
-                  style={{ backgroundColor: "hotpink" }}
-                  onClick={() => handleDelete(guest.id)}
-                >
-                  Delete
-                </Button>
+                <div className="btn-container">
+                  <Button
+                    variant="light-pink"
+                    className="btn-light-pink"
+                    onClick={() => handleEdit(guest)}
+                  >
+                    Redaguoti
+                  </Button>
+                  <Button
+                    variant="danger"
+                    className="btn-danger"
+                    onClick={() =>
+                      handleDelete(guest.id, guest.name, guest.surname)
+                    }
+                  >
+                    Ištrinti
+                  </Button>
+                </div>
               </td>
             </tr>
           ))}
